@@ -1,4 +1,4 @@
-use crate::models::general::llm::Message;
+use crate::models::general::llm::{ChatCompletion, Message};
 use dotenv::dotenv;
 use reqwest::Client;
 use std::env;
@@ -17,7 +17,6 @@ pub async fn call_gtp(messages: Vec<Message>) {
     let url: &str = "https://api.openai.com/v1/chat/completions";
 
     // Create headers.
-
     let mut headers: HeaderMap = HeaderMap::new();
 
     // Create api key header.
@@ -38,7 +37,22 @@ pub async fn call_gtp(messages: Vec<Message>) {
     .build()
     .unwrap();
 
+    // Create chat completion 
+    let chat_completion: ChatCompletion  = ChatCompletion {
+        model: "gtp-4".to_string(),
+        messages,
+        temperature: 0.1
+    };
 
+    // Troubleshooting 
+    let res_raw = client
+    .post(url)
+    .json(&chat_completion)
+    .send()
+    .await
+    .unwrap();
+
+    dbg!(res_raw.text().await.unwrap());
 
 
 }
