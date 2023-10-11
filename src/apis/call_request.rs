@@ -6,7 +6,7 @@ use std::env;
 use reqwest::header::{HeaderMap, HeaderValue};
 
 // Call Large Language Model.
-pub async fn call_gtp(messages: Vec<Message>) -> Result<String, Box<dyn std::error::Error>> {
+pub async fn call_gtp(messages: Vec<Message>) -> Result<String, Box<dyn std::error::Error + Send>> {
     dotenv().ok();
 
     // Extract API key info.
@@ -22,19 +22,22 @@ pub async fn call_gtp(messages: Vec<Message>) -> Result<String, Box<dyn std::err
     // Create api key header.
     headers.insert(
         "authorization",
-        HeaderValue::from_str(&format!("Bearer {}", api_key))?
+        HeaderValue::from_str(&format!("Bearer {}", api_key))
+        .map_err(|e| -> Box<dyn std::error::Error + Send> {Box::new(e)})?
     );
 
     // Create org key header.
     headers.insert(
         "OpenAI-Organization",
-        HeaderValue::from_str(api_org.as_str())?
+        HeaderValue::from_str(api_org.as_str())
+        .map_err(|e| -> Box<dyn std::error::Error + Send> {Box::new(e)})?
     );
 
     // Call client
     let client: Client = Client::builder()
     .default_headers(headers)
-    .build()?;
+    .build()
+    .map_err(|e| -> Box<dyn std::error::Error + Send> {Box::new(e)})?;
 
     // Create chat completion 
     let chat_completion: ChatCompletion  = ChatCompletion {
@@ -63,7 +66,7 @@ pub async fn call_gtp(messages: Vec<Message>) -> Result<String, Box<dyn std::err
 mod tests {
     use super::*;
     #[tokio::test]
-    async fn tests_call_to_openai() -> Result<(), Box<dyn std::error::Error>> {
+    async fn tests_call_to_openai() -> Result<(), Box<dyn std::error::Error + Send>> {
         let message: Message = Message {
             role: "user".to_string(),
             content: "Hello how are you?".to_string()
