@@ -8,3 +8,6 @@ The goal is to use chat gtp to build back-end servers to fetch data based on a u
 
 The AI agent will then fetch the data, another agent will build the back-end, another will build the front-end to present the data. 
 
+### WIP. 
+
+(and will probably be in "WIP" for some time, as this is the first Rust application I'm building )
