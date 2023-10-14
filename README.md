@@ -1,13 +1,17 @@
-### *** Iron Host ***
+# **IronHost: Data Fetching Engine in Rust**
 
-#### This is an experimental Rust application.
+## **Current Phase: Experimental**
 
-The goal is to use chat gtp to build back-end servers to fetch data based on a user input. 
+IronHost is an experimental Rust project designed to dynamically generate its own back-end infrastructure based on queries processed by a GPT-based chat agent.
 
-##### 'ie.' Get statistics form 'house fires caused by pets'
+### **Sample Scenario:** Fetching "House Fires Caused by Pets" Data
 
-The AI agent will then fetch the data, another agent will build the back-end, another will build the front-end to present the data. 
+The project follows this architecture:
+- A GPT-based agent receives a query and processes it.
+- Rust code dynamically generates the back-end logic needed to fetch and process the corresponding data.
+- A front-end layer (also dynamically generated) presents the processed data to the user.
 
-### WIP. 
 
-(and will probably be in "WIP" for some time, as this is the first Rust application I'm building )
+## **Project Status: Work in Progress**
+
+ The project is continuously being updated.
